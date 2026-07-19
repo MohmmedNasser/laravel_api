@@ -34,10 +34,16 @@ class AuthController extends Controller
             'password' => 'required|string',
         ]);
 
-        $user = User::where('email', $validated['email'])->first();
+        $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return [
+                'errors' => [
+                    'email' => [
+                        "The provided credentials do not match our records."
+                    ],
+                ],
+            ];
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;

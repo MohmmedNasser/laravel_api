@@ -44,7 +44,11 @@ class PostController extends Controller implements HasMiddleware
         //     'user_id' => $request->user()->id,
         // ]);
 
-        return response()->json(['message' => 'Post created successfully', 'post' => $post], 201);
+        return response()->json([
+            'message' => 'Post created successfully',
+            'post' => $post,
+            'author' => $post->user
+        ], 201);
     }
 
     /**
