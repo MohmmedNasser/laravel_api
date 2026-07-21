@@ -23,7 +23,7 @@ class PostController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return response()->json(['posts' => Post::all()], 200);
+        return response()->json(['posts' => Post::with('user')->latest()->get()], 200);
     }
 
     /**
@@ -60,7 +60,7 @@ class PostController extends Controller implements HasMiddleware
             return response()->json(['message' => 'Post not found'], 404);
         }
 
-        return response()->json(['post' => $post], 200);
+        return response()->json(['post' => $post->load('user')], 200);
     }
 
     /**
